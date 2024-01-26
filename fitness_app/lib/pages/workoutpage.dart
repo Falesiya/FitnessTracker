@@ -47,7 +47,11 @@ class _WorkOutPageState extends State<WorkOutPage> {
                   .getRelevantWorkout(widget.workoutName)
                   .excersice[index]
                   .isCompleted, 
-                  onCheckBoxChanged:(value)=> onCheckBoxChanged,),
+
+                  onCheckBoxChanged:(val)=> onCheckBoxChanged(
+                  widget.workoutName,
+                  value.getRelevantWorkout(widget.workoutName).excersice[index].name,
+                  ),),
         ),
       ),
     );

@@ -48,7 +48,7 @@ class ExerciseTile extends StatelessWidget {
           ],
         ),
         trailing: Checkbox(value: isCompleted, 
-        onChanged: (value)=> onCheckBoxChanged),
+        onChanged: (value)=> onCheckBoxChanged!(value)),
       ),
     );
   }
