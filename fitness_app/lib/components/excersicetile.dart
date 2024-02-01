@@ -23,7 +23,7 @@ class ExerciseTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: const Color.fromARGB(255, 236, 207, 207),
+      //color: const Color.fromARGB(255, 236, 207, 207),
       child: ListTile(
         title: Text(exercisename),
         subtitle: Row(
@@ -50,6 +50,7 @@ class ExerciseTile extends StatelessWidget {
         trailing: Checkbox(value: isCompleted, 
         onChanged: (value)=> onCheckBoxChanged!(value)),
       ),
+      
     );
   }
 }
