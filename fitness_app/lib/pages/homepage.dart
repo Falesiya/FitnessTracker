@@ -6,7 +6,7 @@ import 'package:workout_app/data/workout_data.dart';
 import 'package:workout_app/pages/workoutpage.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -14,6 +14,38 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final newWorkoutController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<WorkoutData>(context, listen: false).initializedWorkoutList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<WorkoutData>(
+      builder: ((context, value, child) => Scaffold(
+            appBar: AppBar(
+              title: const Text("Workout Tracker"),
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: createNewWorkout,
+              child: const Icon(Icons.add),
+            ),
+            body: ListView.builder(
+              itemCount: value.getWorkoutList().length,
+              itemBuilder: (context, index) => ListTile(
+                title: Text(value.getWorkoutList()[index].name),
+                trailing: IconButton(
+                  icon: Icon(Icons.arrow_forward_ios),
+                  onPressed: () => goToWorkoutPage(value.getWorkoutList()[index].name),
+                ),
+              ),
+            ),
+          )),
+    );
+  }
+
   void createNewWorkout() {
     showDialog(
       context: context,
@@ -37,9 +69,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void save() {
-    //get workout from textcontroller
     String newWorkoutname = newWorkoutController.text;
-    //add workout to workout data list
     Provider.of<WorkoutData>(context, listen: false).addWorkOut(newWorkoutname);
     Navigator.pop(context);
     clear();
@@ -50,43 +80,18 @@ class _HomePageState extends State<HomePage> {
     clear();
   }
 
-//to cleat dialogbox\
   void clear() {
     newWorkoutController.clear();
   }
 
-//detail of Each Workout
   void goToWorkoutPage(String workoutName) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => WorkOutPage(
-                  workoutName: workoutName,
-                )));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<WorkoutData>(
-      builder: ((context, value, child) => Scaffold(
-            appBar: AppBar(
-              title: const Text("Workout Tracker"),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: createNewWorkout,
-              child: const Icon(Icons.add),
-            ),
-            body: ListView.builder(
-                itemCount: value.getWorkoutList().length,
-                itemBuilder: (context, index) => ListTile(
-                    title: Text(value.getWorkoutList()[index].name),
-                    trailing: IconButton(
-                        icon: Icon(Icons.arrow_forward_ios),
-                        onPressed: () => goToWorkoutPage(value.getWorkoutList()[index].name)
-                        )
-                        )
-                        ),
-          )),
+      context,
+      MaterialPageRoute(
+        builder: (context) => WorkOutPage(
+          workoutName: workoutName,
+        ),
+      ),
     );
   }
 }
